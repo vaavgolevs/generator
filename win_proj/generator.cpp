@@ -81,8 +81,9 @@ generator::generator(QWidget *parent):
 ///	UpdatePlotter();
 	plot_Array.fill(0);
 	plot_Array.resize(plot_arr_length);
-	ImpulseToPlot();
+///	ImpulseToPlot();
 ///========================================
+	loadSettings();
 /*
 	DigitCounter* counter = new DigitCounter(4, this); // 4 цифры
 	counter->setRange(0, 9999);
@@ -94,8 +95,14 @@ generator::generator(QWidget *parent):
 		});
 
 #endif
+	show_all_par();
+	ImpulseToPlot();
+	UpdatePlotter();
+
 }
+
 void generator::show_all_par(void) {
+///	ui.lineEdit_ip->show_par();
 	ui.ed_a_imp->show_par();
 	ui.ed_num_periods->show_par();
 	ui.ed_t_imp_offset->show_par();
@@ -103,7 +110,34 @@ void generator::show_all_par(void) {
 	ui.ed_freq->show_par();
 	ui.ed_kus->show_par();
 	ui.ed_offs->show_par();
+///	par_gen.dds_enable
 	///========================================
+///	par_gen.dds_enable = 
+		ui.checkBox_dds->setChecked(par_gen.dds_enable);
+		ui.checkBox_auto->setChecked(par_gen.auto_enable);
+		ui.checkBox_gauss->setChecked(par_gen.gaus_enable);
+		ui.checkBox_inv->setChecked(par_gen.inv_enable);
+		if (par_gen.auto_enable) {
+			ui.ed_osc_length->show();
+			ui.ed_t_cycle->show();
+			ui.ed_t_def->show();
+			ui.ed_t_imp_len->show();
+			ui.label_len->show();
+			ui.label_t_imp->show();
+			ui.label_t_cycle->show();
+			ui.label_t_def->show();
+		}
+		else {
+			ui.ed_osc_length->hide();
+			ui.ed_t_cycle->hide();
+			ui.ed_t_def->hide();
+			ui.ed_t_imp_len->hide();
+			ui.label_len->hide();
+			ui.label_t_imp->hide();
+			ui.label_t_cycle->hide();
+			ui.label_t_def->hide();
+
+		}
 ///	DigitCounter* counter = new DigitCounter(this,6); // 4 цифры
 ///	counter->setRange(0, 9999);
 ///	counter->setValue(1234);
@@ -118,6 +152,7 @@ void generator::closeEvent( QCloseEvent * event )
 
 generator::~generator()
 {
+saveSettings();
 
 }
 void generator::RecalculateImpulse()
@@ -357,4 +392,49 @@ void generator::test_clicked()
 	fillTestData();
 	UpdatePlotter();
 ///	return;
+}
+void generator::saveSettings()
+{
+QSettings settings(QCoreApplication::applicationDirPath() + "//generator.ini",
+	QSettings::IniFormat);
+///=========================================================
+settings.setValue("gen_ip_addr", par_gen.ip_addr);
+
+settings.setValue("gen_Timp_len", par_gen.Timp_len);
+settings.setValue("gen_Timp_offset", par_gen.Timp_offset);
+settings.setValue("gen_gain", par_gen.gain);
+settings.setValue("gen_offs", par_gen.offs);
+///	settings.setValue("attenuator", sent_par.attenuator);
+
+settings.setValue("gen_num_periods", par_gen.num_periods);
+
+settings.setValue("gen_Aimp", par_gen.Aimp);
+settings.setValue("gen_dev_frequency", par_gen.frequency);
+settings.setValue("gen_gaus_enable", par_gen.gaus_enable);
+settings.setValue("gen_dds_enable", par_gen.dds_enable);
+settings.setValue("gen_auto_enable", par_gen.auto_enable);
+
+}
+void generator::loadSettings()
+{
+QSettings settings(QCoreApplication::applicationDirPath() + "//generator.ini",
+	QSettings::IniFormat);
+///===============================================================================
+par_gen.ip_addr = settings.value("gen_ip_addr", "192.168.1.99").toString();
+
+par_gen.Timp_len = settings.value("gen_Timp_len", 100).toInt();
+par_gen.Timp_offset = settings.value("gen_Timp_offset", 0).toInt();
+par_gen.gain = settings.value("gen_gain", 10).toInt();
+par_gen.offs = settings.value("gen_offs", 0).toInt();
+///	sent_par.step_osc = settings.value("step_osc", sent_par.step_osc).toInt();
+///	sent_par.attenuator = settings.value("attenuator", sent_par.attenuator).toInt();
+
+par_gen.num_periods = settings.value("gen_num_periods", 4).toInt();
+
+par_gen.Aimp = settings.value("gen_Aimp", 1000).toInt();
+par_gen.frequency = settings.value("gen_frequency", 2.000).toFloat();
+par_gen.gaus_enable = settings.value("gen_gaus_enable", false).toBool();
+par_gen.dds_enable = settings.value("gen_dds_enable", false).toBool();
+par_gen.auto_enable = settings.value("gen_auto_enable", false).toBool();
+
 }

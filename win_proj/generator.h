@@ -92,6 +92,7 @@ struct get_type_t
 	bool gaus_enable;
 	bool dds_enable;
 	bool inv_enable;
+	bool auto_enable;
 
 ///	quint8 attenuator;
 };
@@ -145,6 +146,9 @@ protected:
 	void UpdatePlotter();
 	void fillTestData();
 	void plotRespond(qint16* point_arr, quint16 num_points);
+public:
+	void saveSettings();
+	void loadSettings();
 
 };
 

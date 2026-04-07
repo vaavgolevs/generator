@@ -49,7 +49,7 @@
       <height>0</height>
      </size>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="label_len">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -528,23 +528,13 @@
       <string>test</string>
      </property>
     </widget>
-    <widget class="DigitCounter" name="widget_freq" native="true">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>440</y>
-       <width>71</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="TwoPositionSwitch" name="twoPositionSwitch" native="true">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>470</y>
-       <width>52</width>
-       <height>21</height>
+       <width>41</width>
+       <height>16</height>
       </rect>
      </property>
     </widget>
@@ -573,12 +563,6 @@
    <class>param_ed</class>
    <extends>QLineEdit</extends>
    <header location="global">param_ed.h</header>
-  </customwidget>
-  <customwidget>
-   <class>DigitCounter</class>
-   <extends>QWidget</extends>
-   <header>DigitCounter.h</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>TwoPositionSwitch</class>
